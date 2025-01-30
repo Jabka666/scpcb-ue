@@ -30,7 +30,7 @@ Function InitSubtitlesAssets%()
 	MoveEntity(subassets\BoxSprite, 0.0, 0.0, 1.0)
 	EntityTexture(subassets\BoxSprite, subassets\BoxTexture)
 	EntityBlend(subassets\BoxSprite, 1)
-	EntityAlpha(subassets\BoxSprite, 0.5)
+	EntityAlpha(subassets\BoxSprite, 0.75)
 
 	SetBuffer(TextureBuffer(subassets\BoxTexture))
 	ClsColor(20, 20, 20)
