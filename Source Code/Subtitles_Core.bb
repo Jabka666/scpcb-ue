@@ -336,6 +336,11 @@ Function DeInitSubtitlesAssets%()
 	For snd.Sound = Each Sound
 		RemoveSubtitlesToken(snd)
 	Next
+
+	FreeTexture(subassets\BoxTexture)
+	FreeEntity(subassets\BoxSprite)
+	FreeEntity(subassets\BoxCamera)
+
 	Delete(subassets) : subassets = Null
 End Function
 
