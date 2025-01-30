@@ -2,6 +2,9 @@ Global SubFile%, LocalSubFile%
 Global SubColors%, LocalSubColors%
 
 Type SubtitlesAssets
+	Field BoxCamera%
+	Field BoxSprite%
+	Field BoxTexture%
 	Field TextHeight%
 	Field CurrentBoxTop#
 	Field CurrentBoxHeight#
@@ -16,7 +19,24 @@ Function InitSubtitlesAssets%()
 	subassets\BoxWidth = opt\GraphicWidth * 0.75
 	subassets\BoxLeft = mo\Viewport_Center_X + 1 - (subassets\BoxWidth / 2)
 	subassets\BoxTop = opt\GraphicHeight * 0.82
-	
+	subassets\BoxCamera = CreateCamera()
+	subassets\BoxSprite = CreateSprite(subassets\BoxCamera)
+	subassets\BoxTexture = CreateTexture(1, 1)
+
+	PositionEntity(subassets\BoxCamera, 0.0, 0.0, 20000.0)
+	CameraClsMode(subassets\BoxCamera, 0, 0)
+	CameraProjMode(subassets\BoxCamera, 0)
+
+	MoveEntity(subassets\BoxSprite, 0.0, 0.0, 1.0)
+	EntityTexture(subassets\BoxSprite, subassets\BoxTexture)
+	EntityBlend(subassets\BoxSprite, 1)
+	EntityAlpha(subassets\BoxSprite, 0.5)
+
+	SetBuffer(TextureBuffer(subassets\BoxTexture))
+	ClsColor(20, 20, 20)
+	Cls()
+
+	SetBuffer(BackBuffer())
 	SetFontEx(fo\FontID[Font_Default])
 	subassets\TextHeight = FontHeight() * 2.5
 End Function
@@ -159,8 +179,10 @@ Function RenderSubtitles%()
 	subassets\CurrentBoxHeight = CurveValue(BoxHeight, subassets\CurrentBoxHeight, 7.0)
 	
 	; ~ Render a box
-	Color(20, 20, 20)
-	Rect(subassets\BoxLeft, subassets\CurrentBoxTop, subassets\BoxWidth, subassets\CurrentBoxHeight)
+	CameraViewport(subassets\BoxCamera, subassets\BoxLeft, subassets\CurrentBoxTop, subassets\BoxWidth, subassets\CurrentBoxHeight)
+	CameraProjMode(subassets\BoxCamera, 2)
+	RenderWorld()
+	CameraProjMode(subassets\BoxCamera, 0)
 	
 	; ~ Render a text
 	Lines = -1
